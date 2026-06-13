@@ -1,16 +1,26 @@
-# React + Vite
+# todo-react-app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📝 프로젝트 개요
+React + Zustand + Tailwind CSS 4 + Vite 기반의 Todo 웹 애플리케이션입니다.
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 개발 환경
+- Node.js v20 LTS
+- Vite 6
+- React 19
+- Zustand
+- Tailwind CSS 4
 
-## Expanding the ESLint configuration
+## ✅ 구현 기능
+### [ 기본 기능 ]
+- Todo 추가
+- 목록 표시
+- 완료 토글
+- 삭제 (CRUD)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### [ 확장 기능 ]
+- 🌤 날씨 API 연동 (OpenWeatherMap) — 우측 상단 WeatherWidget, .env API 키 관리, 로딩/에러 상태 UI
+- (추가 선택 기능 2)
+- (추가 선택 기능 3)
