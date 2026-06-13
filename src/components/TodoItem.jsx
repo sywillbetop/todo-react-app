@@ -44,6 +44,9 @@ function TodoItem({ todo }) {
         if (e.key === 'Escape') setIsEditing(false) // Escape: 수정 취소 (원래 텍스트 유지)
     }
 
+    // 마감일이 오늘보다 이전이고 미완료인 경우 기한 초과로 판단
+    const isOverdue = !todo.done && todo.dueDate && todo.dueDate < new Date().toISOString().slice(0, 10);
+
     return (
         <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
             {/* 체크박스: 클릭하면 done 상태 토글*/}
@@ -68,14 +71,22 @@ function TodoItem({ todo }) {
                 />
             ) : (
                 // 일반 모드: span 표시, 더블클릭하면 편집 모드로 전환
-                <span
-                    onDoubleClick={handleDoubleClick}
-                    className={`flex-1 cursor-pointer ${
-                        // done이 true면 취소선 + 연한 색, false면 기본 색
-                        todo.done ? 'line-through text-gray-400' : 'text-gray-800'
-                    }`}
-                >{todo.title}
-                </span>
+                <div className="flex-1 flex flex-col">
+                    <span
+                        onDoubleClick={handleDoubleClick}
+                        className={`cursor-pointer ${
+                            // done이 true면 취소선 + 연한 색, false면 기본 색
+                            todo.done ? 'line-through text-gray-400' : 'text-gray-800'
+                        }`}
+                    >{todo.title}
+                    </span>
+                    {/* 마감일이 있을 때만 표시 — 기한 초과 시 빨간색 */}
+                    {todo.dueDate && (
+                        <span className={`text-xs ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
+                            {isOverdue ? '⚠ ' : ''}{todo.dueDate}
+                        </span>
+                    )}
+                </div>
             )}
 
             {/* 삭제 버튼 */}

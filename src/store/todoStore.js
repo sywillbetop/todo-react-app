@@ -12,14 +12,15 @@ import { create } from 'zustand';
 // set: 상태를 업데이트할 때 사용하는 Zustand 내장 함수
 const useTodoStore = create((set) => ({
     // -- State --
-    todos: [], // 할 일 목록 배열 -> { id, title, done }
+    todos: [], // 할 일 목록 배열 -> { id, title, done, dueDate }
 
     // -- Action (상태 변경 함수) --
-    addTodo: (title) =>
+    // dueDate: 'YYYY-MM-DD' 형식 문자열 또는 null
+    addTodo: (title, dueDate = null) =>
         set((state) => ({
             // 기존 todos 배열에 새 항목을 추가한 새 배열 반환
             // Date.now()로 고유ID 생성 (현재 시각 밀리초)
-            todos: [...state.todos, { id: Date.now(), title, done: false }]
+            todos: [...state.todos, { id: Date.now(), title, done: false, dueDate }]
         })),
 
     // 완료 상태 토글 (체크박스 클릭 시)

@@ -7,6 +7,7 @@ import useTodoStore from '../store/todoStore';
 import AddTodo from '../components/AddTodo';
 import TodoItem from '../components/TodoItem';
 import WeatherWidget from '../components/WeatherWidget';
+import CalendarWidget from '../components/CalendarWidget';
 
 function TodoPage() {
     // 스토어에서 전체 할 일 목록을 가져
@@ -25,17 +26,16 @@ function TodoPage() {
     return (
         <div className='min-h-screen bg-gray-50 p-6'>
 
-            {/* 우측 상단 고정 위치에 날씨 위젯 배치 */}
-            {/* FIXME: 브라우저 창 축소 시에 날씨 위젯과 할 일 입력창 영역이 겹치는 버그 수정 필요. */}
-            <div className='absolute top-6 right-6'>
+            {/* 우측 상단 고정 위치에 날씨 위젯 + 달력 위젯 배치 */}
+            <div className='absolute top-6 right-6 flex flex-col gap-4 w-80'>
                 <WeatherWidget />
+                <CalendarWidget />
             </div>
 
             <div className='max-w-md mx-auto space-y-6'>
                 {/* ───────── 헤더 섹션 ───────── */}
                 <div className='flex items-center justify-center gap-2'>
                     <h1 className='text-3xl font-extrabold text-blue-600'>My Tasks</h1>
-
                     {pendingCount > 0 ? (
                         // 미완료 항목이 있으면 숫자 배지 표시
                         <span className='bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full'>
@@ -56,14 +56,12 @@ function TodoPage() {
                 <div className='space-y-3'>
                     {/* ───────── 미완료 항목 목록 ───────── */}
                     {pendingTodos.map((todo) => (
-                        // key: React가 각 항목을 구별하기 위해 반드시 필요한 고유값
                         <TodoItem key={todo.id} todo={todo} />
                     ))}
 
                     {/* 완료 항목이 1개 이상일 때만 구분선 + 완료 목록 표시 */}
                     {doneTodos.length > 0 && (
-                        <> {/* <div> 대신 Fragment(<></>) 사용 : <div>로 감싸면 부모의 space-y-3 간격 계산 틀어짐 방지*/}
-                            {/* 구분선 + '완료된 항목 N개' 텍스트 */}
+                        <>
                             <div className='flex items-center gap-2 pt-2'>
                                 <hr className='flex-1 border-gray-300' />
                                 <span className='text-xs text-gray-400 whitespace-nowrap'>
@@ -71,8 +69,6 @@ function TodoPage() {
                                 </span>
                                 <hr className='flex-1 border-gray-300' />
                             </div>
-
-                            {/* 완료 항목 목록 */}
                             {doneTodos.map((todo) => (
                                 <TodoItem key={todo.id} todo={todo} />
                             ))}
