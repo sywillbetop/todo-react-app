@@ -82,12 +82,11 @@ function TodoItem({ todo }) {
             <button
                 onClick={() => deleteTodo(todo.id)}
                 className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
-                {/* FIXME: 휴지통 icon 스크립트 오류 발생. 원인 파악 필요.TodoItem.jsx:89 Error: <path> attribute d: Expected number, "…2-2h4c10 2 1 2 2v2". */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                      strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 6h18"/>
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c10 2 1 2 2v2"/>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
                 </svg>
             </button>
         </div>

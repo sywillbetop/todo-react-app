@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import useTodoStore from '../store/todoStore';
 import AddTodo from '../components/AddTodo';
 import TodoItem from '../components/TodoItem';
+import WeatherWidget from '../components/WeatherWidget';
 
 function TodoPage() {
     // 스토어에서 전체 할 일 목록을 가져
@@ -23,6 +24,13 @@ function TodoPage() {
 
     return (
         <div className='min-h-screen bg-gray-50 p-6'>
+
+            {/* 우측 상단 고정 위치에 날씨 위젯 배치 */}
+            {/* FIXME: 브라우저 창 축소 시에 날씨 위젯과 할 일 입력창 영역이 겹치는 버그 수정 필요. */}
+            <div className='absolute top-6 right-6'>
+                <WeatherWidget />
+            </div>
+
             <div className='max-w-md mx-auto space-y-6'>
                 {/* ───────── 헤더 섹션 ───────── */}
                 <div className='flex items-center justify-center gap-2'>
