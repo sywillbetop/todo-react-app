@@ -25,7 +25,9 @@ function AddTodo() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleAdd()
+                }}
                 placeholder="할 일을 입력하세요..."
                 className="flex-1 outline-none text-gray-700 placeholder-gray-400"
             />
