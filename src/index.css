@@ -1,1 +1,2 @@
+/* Tailwind CSS를 프로젝트 전체에 불러옴 -> className에 Tailwind 클레스를 쓸 수 있게 함 */
 @import 'tailwindcss';
