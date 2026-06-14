@@ -2,7 +2,7 @@
     --> 헤더(제목 + 카운트 배지), 입력창, 미완료 목록, 완료 목록 렌더링
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 // 현재 시간대에 따른 인사말 반환
 function getGreeting() {
@@ -16,6 +16,7 @@ function getGreeting() {
 }
 
 import useTodoStore from '../store/todoStore';
+import useCategoryStore from '../store/categoryStore';
 import AddTodo from '../components/AddTodo';
 import TodoItem from '../components/TodoItem';
 import WeatherWidget from '../components/WeatherWidget';
@@ -23,10 +24,18 @@ import CalendarWidget from '../components/CalendarWidget';
 
 function TodoPage() {
     const todos = useTodoStore((state) => state.todos);
+    const categories = useCategoryStore((state) => state.categories);
+    const [filterCategoryId, setFilterCategoryId] = useState(null);
 
     // useMemo: todos가 변경될 때만 다시 계산 (불필요한 재계산 방지위함)
-    const pendingTodos = useMemo(() => todos.filter((t) => !t.done), [todos])
-    const doneTodos = useMemo(() => todos.filter((t) => t.done), [todos])
+    const pendingTodos = useMemo(() => {
+        const pending = todos.filter((t) => !t.done);
+        return filterCategoryId ? pending.filter((t) => t.categoryId === filterCategoryId) : pending;
+    }, [todos, filterCategoryId]);
+    const doneTodos = useMemo(() => {
+        const done = todos.filter((t) => t.done);
+        return filterCategoryId ? done.filter((t) => t.categoryId === filterCategoryId) : done;
+    }, [todos, filterCategoryId]);
 
     const pendingCount = pendingTodos.length
 
@@ -51,6 +60,7 @@ function TodoPage() {
                                 <span className='bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full'>
                                     {pendingCount}
                                 </span>
+                                // TODO: 카테고리 필터 시 컬러로 구분? 아니면 다른 방법 고려, 카테고리에 등록된 할 일 없을 때 '모두 완료!' 표시 여부 고려.
                             ) : (
                                 // 미완료 항목이 0개이고 todos가 하나라도 있으면 '모두 완료!' 표시
                                 todos.length > 0 && (
@@ -59,6 +69,31 @@ function TodoPage() {
                             )}
                         </div>
                     </div>
+
+                    {/* 카테고리 필터 칩 */}
+                    {categories.length > 0 && (
+                        <div className='flex-shrink-0 flex flex-wrap gap-2'>
+                            <button
+                                onClick={() => setFilterCategoryId(null)}
+                                className={`px-3 py-1 rounded-full text-xs transition-colors ${!filterCategoryId ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                            >전체</button>
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setFilterCategoryId(filterCategoryId === cat.id ? null : cat.id)}
+                                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs border transition-colors ${
+                                        filterCategoryId === cat.id
+                                            ? 'text-white border-transparent'
+                                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                                    }`}
+                                    style={filterCategoryId === cat.id ? { backgroundColor: cat.color, borderColor: cat.color } : {}}
+                                >
+                                    <span className='w-2 h-2 rounded-full flex-shrink-0' style={{ backgroundColor: cat.color }} />
+                                    {cat.name}
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
                     {/* 입력 컴포넌트 (고정) */}
                     <div className='flex-shrink-0'>

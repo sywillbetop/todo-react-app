@@ -4,6 +4,7 @@
 
 import { useState } from 'react'
 import useTodoStore from '../store/todoStore';
+import useCategoryStore from '../store/categoryStore';
 
 /**
  * @param {Object} todo - 부모로부터 전달받은 개별 할 일 객체
@@ -17,6 +18,8 @@ import useTodoStore from '../store/todoStore';
 function TodoItem({ todo }) {
     // 스토어에서 필요한 액션
     const { toggleTodo, deleteTodo, updateTodo } = useTodoStore();
+    const getCategoryById = useCategoryStore((state) => state.getCategoryById);
+    const category = todo.categoryId ? getCategoryById(todo.categoryId) : null;
 
     // isEditing: 현재 편집 모드인지 여부 확인 (true=input 표시, false=span 표시)
     const [isEditing, setIsEditing] = useState(false)
@@ -37,6 +40,8 @@ function TodoItem({ todo }) {
         }
         setIsEditing(false) // 빈 문자열로 수정하려 하면 원래 텍스트 유지 (수정 없이 편집 모드만 종료)
     }
+
+    // TODO: 날짜, 시간, 카테고리 수정 기능 추가
 
     // 편집 중 키보드 입력 처리
     const handleKeyDown = (e) => {
@@ -72,17 +77,25 @@ function TodoItem({ todo }) {
             ) : (
                 // 일반 모드: span 표시, 더블클릭하면 편집 모드로 전환
                 <div className="flex-1 flex flex-col">
-                    <span
-                        onDoubleClick={handleDoubleClick}
-                        className={`cursor-pointer ${
-                            // done이 true면 취소선 + 연한 색, false면 기본 색
-                            todo.done ? 'line-through text-gray-400' : 'text-gray-800'
-                        }`}
-                    >{todo.title}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                        {category && (
+                            <span
+                                className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs border flex-shrink-0"
+                                style={{ color: category.color, borderColor: category.color, backgroundColor: category.color + '18' }}
+                            >
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: category.color }} />
+                                {category.name}
+                            </span>
+                        )}
+                        <span
+                            onDoubleClick={handleDoubleClick}
+                            className={`cursor-pointer ${todo.done ? 'line-through text-gray-400' : 'text-gray-800'}`}
+                        >{todo.title}
+                        </span>
+                    </div>
                     {/* 마감일이 있을 때만 표시 — 기한 초과 시 빨간색 */}
                     {todo.dueDate && (
-                        <span className={`text-xs ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
+                        <span className={`text-xs mt-1 ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
                             {isOverdue ? '⚠ ' : ''}{todo.dueDate}{todo.dueTime ? ` ${todo.dueTime}` : ' 하루종일'}
                         </span>
                     )}
