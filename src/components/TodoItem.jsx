@@ -83,7 +83,7 @@ function TodoItem({ todo }) {
                     {/* 마감일이 있을 때만 표시 — 기한 초과 시 빨간색 */}
                     {todo.dueDate && (
                         <span className={`text-xs ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
-                            {isOverdue ? '⚠ ' : ''}{todo.dueDate}
+                            {isOverdue ? '⚠ ' : ''}{todo.dueDate}{todo.dueTime ? ` ${todo.dueTime}` : ' 하루종일'}
                         </span>
                     )}
                 </div>

@@ -2,6 +2,7 @@
   --> 모든 컴포넌트에서 공유해야 하는 todos 데이터와 그 데이터를 변경하는 함수들을 한 곳에서 관리
  */
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 /**
  * 1. 전역 상태 관리 (Zustand Store)
@@ -10,17 +11,18 @@ import { create } from 'zustand';
 
 // create()로 스토어 생성
 // set: 상태를 업데이트할 때 사용하는 Zustand 내장 함수
-const useTodoStore = create((set) => ({
+const useTodoStore = create(persist((set) => ({
     // -- State --
     todos: [], // 할 일 목록 배열 -> { id, title, done, dueDate }
 
     // -- Action (상태 변경 함수) --
     // dueDate: 'YYYY-MM-DD' 형식 문자열 또는 null
-    addTodo: (title, dueDate = null) =>
+    // dueTime: 'HH:mm' 형식 문자열 또는 null (null = 하루종일)
+    addTodo: (title, dueDate = null, dueTime = null) =>
         set((state) => ({
             // 기존 todos 배열에 새 항목을 추가한 새 배열 반환
             // Date.now()로 고유ID 생성 (현재 시각 밀리초)
-            todos: [...state.todos, { id: Date.now(), title, done: false, dueDate }]
+            todos: [...state.todos, { id: Date.now(), title, done: false, dueDate, dueTime }]
         })),
 
     // 완료 상태 토글 (체크박스 클릭 시)
@@ -50,6 +52,7 @@ const useTodoStore = create((set) => ({
                 t.id === id ? { ...t, title: newTitle } : t
             ),
         })),
-    }));
+    }),
+    { name: 'todo-storage' })); // NOTE: 개발 시 휘발 데이터로 인한 매번 테스트 데이터 입력 작업으로 해당 스토리지 기능 추가.
 
 export default useTodoStore;
