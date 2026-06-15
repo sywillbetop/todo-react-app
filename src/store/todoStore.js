@@ -16,19 +16,19 @@ const useTodoStore = create(persist((set) => ({
     todos: [], // 할 일 목록 배열 -> { id, title, done, dueDate }
 
     // -- Action (상태 변경 함수) --
-    // dueDate: 'YYYY-MM-DD' 형식 문자열 또는 null
-    // dueTime: 'HH:mm' 형식 문자열 또는 null (null = 하루종일)
-    addTodo: (title, dueDate = null, dueTime = null, categoryId = null) =>
-        set((state) => ({
-            // 기존 todos 배열에 새 항목을 추가한 새 배열 반환
-            // Date.now()로 고유ID 생성 (현재 시각 밀리초)
-            todos: [...state.todos, { id: Date.now(), title, done: false, dueDate, dueTime, categoryId }]
-        })),
+        // dueDate: 'YYYY-MM-DD' 형식 문자열 또는 null
+        // dueTime: 'HH:mm' 형식 문자열 또는 null (null = 하루종일)
+        addTodo: (title, dueDate = null, dueTime = null, categoryId = null) =>
+            set((state) => ({
+                // 기존 todos 배열에 새 항목을 추가한 새 배열 반환
+                // Date.now()로 고유ID 생성 (현재 시각 밀리초)
+                todos: [...state.todos, {id: Date.now(), title, done: false, dueDate, dueTime, categoryId}]
+            })),
 
-    // 완료 상태 토글 (체크박스 클릭 시)
-    // id: 토글할 항목의 id
-    toggleTodo: (id) =>
-        set((state) => ({
+        // 완료 상태 토글 (체크박스 클릭 시)
+        // id: 토글할 항목의 id
+        toggleTodo: (id) =>
+            set((state) => ({
             // map으로 전체 순회하면서 id가 일치하는 항목만 done값 반전
             todos: state.todos.map((t) =>
                 t.id === id ? { ...t, done: !t.done } : t

@@ -9,10 +9,12 @@ import Calendar from 'react-calendar';
 import './CalendarWidget.css';
 import useTodoStore from '../store/todoStore';
 import useHolidayStore from '../store/holidayStore';
+import useCategoryStore from '../store/categoryStore';
 
 function CalendarWidget() {
     const todos = useTodoStore((state) => state.todos);
     const { fetchHolidays, getHolidayName } = useHolidayStore();
+    const getCategoryById = useCategoryStore((state) => state.getCategoryById);
 
     const [selectedDate, setSelectedDate] = useState(null); // 클릭한 날짜
     const [activeYear, setActiveYear] = useState(new Date().getFullYear()); // 현재 보이는 연도
@@ -102,17 +104,31 @@ function CalendarWidget() {
                             </span>
                         )}
                     </div>
-                    {selectedTodos.length > 0 ? (
+                    {selectedTodos.length > 0 ? ( // 선택한 날짜의 할 일이 1개 이상이면 목록, 없으면 빈 문구
                         <ul className='space-y-1'>
-                            {selectedTodos.map((todo) => (
-                                <li key={todo.id} className='flex items-center gap-2 text-sm'>
-                                    {/* 완료 여부에 따라 스타일 변경 */}
-                                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${todo.done ? 'bg-gray-300' : 'bg-blue-500'}`} />
-                                    <span className={todo.done ? 'line-through text-gray-400' : 'text-gray-700'}>
-                                        {todo.title}
-                                    </span>
-                                </li>
-                            ))}
+                            {selectedTodos.map((todo) => {
+                                // 각 할 일 순회하며, categoryId가 있으면 (= 카테고리에 속해 있으면) 스토어에서 카테고리 객체 꺼내고 없으면 null
+                                const cat = todo.categoryId ? getCategoryById(todo.categoryId) : null;
+                                const isOverdue = !todo.done && todo.dueDate < new Date().toISOString().slice(0, 10);
+                                return (
+                                    <li key={todo.id} className='flex items-center gap-2 text-sm'>
+                                        {cat
+                                            // 카테고리 있으면 채워진 원 -->  완료면 회색, 미완료면 카테고리 색
+                                            ? <span className='w-2.5 h-2.5 rounded-full flex-shrink-0' style={{ backgroundColor: todo.done ? '#d1d5db' : cat.color }} />
+                                            // 카테고리 없으면 빈 원.
+                                            : <span className='w-2.5 h-2.5 rounded-full flex-shrink-0 border-2 border-gray-300' />
+                                        }
+                                        {/* 완료면 취소선 + 연한 색 */}
+                                        <span className={`flex-1 ${todo.done ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+                                            {todo.title}
+                                        </span>
+                                        {/* 기한 초과 경고 + 시간 표시 */}
+                                        <span className={`text-xs flex-shrink-0 ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
+                                            {isOverdue ? '⚠ ' : ''}{todo.dueTime ?? '하루종일'}
+                                        </span>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     ) : (
                         <p className='text-xs text-gray-400'>등록된 할 일이 없습니다.</p>
