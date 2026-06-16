@@ -6,6 +6,7 @@ import { useState } from 'react';
 import useTodoStore from '../store/todoStore';
 import useCategoryStore, { CATEGORY_COLORS } from '../store/categoryStore';
 import Toggle from './Toggle';
+import CategoryBadge from './CategoryBadge';
 
 function AddTodo() {
     const [input, setInput] = useState('');
@@ -152,38 +153,14 @@ function AddTodo() {
                             style={{ borderColor: cat.color }}
                         />
                     ) : (
-                        <button
+                        <CategoryBadge
                             key={cat.id}
-                            type="button"
+                            cat={cat}
+                            selected={selectedCategoryId === cat.id}
                             onClick={() => setSelectedCategoryId(selectedCategoryId === cat.id ? null : cat.id)}
-                            className={`group flex items-center gap-1 px-2 py-0.5 rounded-full text-sm border transition-colors ${
-                                selectedCategoryId === cat.id
-                                    ? 'text-white border-transparent'
-                                    : 'text-gray-600 border-gray-200 bg-gray-50 hover:bg-gray-100'
-                            }`}
-                            style={selectedCategoryId === cat.id ? { backgroundColor: cat.color, borderColor: cat.color } : {}}
-                        >
-                            <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
-                            {cat.name}
-                            <span
-                                role="button"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setEditingCategoryId(cat.id);
-                                    setEditingName(cat.name);
-                                }}
-                                className="hidden group-hover:inline ml-0.5 leading-none text-gray-400 hover:text-blue-400"
-                            >✎</span>
-                            <span
-                                role="button"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    deleteCategory(cat.id);
-                                    if (selectedCategoryId === cat.id) setSelectedCategoryId(null);
-                                }}
-                                className="hidden group-hover:inline leading-none text-gray-400 hover:text-red-400"
-                            >×</span>
-                        </button>
+                            onEdit={() => { setEditingCategoryId(cat.id); setEditingName(cat.name); }}
+                            onDelete={() => { deleteCategory(cat.id); if (selectedCategoryId === cat.id) setSelectedCategoryId(null); }}
+                        />
                     )
                 ))}
                 {!isAddingCategory && (

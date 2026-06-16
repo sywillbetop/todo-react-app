@@ -19,6 +19,7 @@ import useTodoStore from '../store/todoStore';
 import useCategoryStore from '../store/categoryStore';
 import { sortPendingTodos } from '../utils/todoUtils';
 import AddTodo from '../components/AddTodo';
+import CategoryBadge from '../components/CategoryBadge';
 import TodoItem from '../components/TodoItem';
 import WeatherWidget from '../components/WeatherWidget';
 import CalendarWidget from '../components/CalendarWidget';
@@ -83,19 +84,13 @@ function TodoPage() {
                                 className={`px-3 py-1 rounded-full text-sm transition-colors ${!filterCategoryId ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                             >전체</button>
                             {categories.map((cat) => (
-                                <button
+                                <CategoryBadge
                                     key={cat.id}
+                                    cat={cat}
+                                    selected={filterCategoryId === cat.id}
                                     onClick={() => setFilterCategoryId(filterCategoryId === cat.id ? null : cat.id)}
-                                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm border transition-colors ${
-                                        filterCategoryId === cat.id
-                                            ? 'text-white border-transparent'
-                                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
-                                    }`}
-                                    style={filterCategoryId === cat.id ? { backgroundColor: cat.color, borderColor: cat.color } : {}}
-                                >
-                                    <span className='w-2 h-2 rounded-full flex-shrink-0' style={{ backgroundColor: cat.color }} />
-                                    {cat.name}
-                                </button>
+                                    className='px-3 py-1'
+                                />
                             ))}
                         </div>
                     )}

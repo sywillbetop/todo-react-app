@@ -7,6 +7,7 @@ import { useState, useRef } from 'react'
 import useTodoStore from '../store/todoStore';
 import useCategoryStore from '../store/categoryStore';
 import Toggle from './Toggle';
+import CategoryBadge from './CategoryBadge';
 import { checkIsOverdue, getTodayString } from '../utils/todoUtils';
 
 /**
@@ -146,25 +147,16 @@ function TodoItem({ todo }) {
                         )}
                     </div>
 
-                    {/* 카테고리 선택 — 등록된 카테고리가 있을 때만 표시 */}
+                    {/* 카테고리 선택 — 등록된 카테고리가 있을 때만 표시, 재클릭 시 선택 해제 */}
                     {categories.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
                             {categories.map((cat) => (
-                                // 선택된 카테고리 재클릭 시 선택 해제 (null로 초기화)
-                                <button
+                                <CategoryBadge
                                     key={cat.id}
-                                    type="button"
+                                    cat={cat}
+                                    selected={editCategoryId === cat.id}
                                     onClick={() => setEditCategoryId(editCategoryId === cat.id ? null : cat.id)}
-                                    className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-sm border transition-colors ${
-                                        editCategoryId === cat.id
-                                            ? 'text-white border-transparent'
-                                            : 'text-gray-600 border-gray-200 bg-gray-50 hover:bg-gray-100'
-                                    }`}
-                                    style={editCategoryId === cat.id ? { backgroundColor: cat.color, borderColor: cat.color } : {}}
-                                >
-                                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: cat.color }} />
-                                    {cat.name}
-                                </button>
+                                />
                             ))}
                         </div>
                     )}
@@ -180,15 +172,9 @@ function TodoItem({ todo }) {
                 // 일반 모드: 제목 더블클릭 시 편집 모드 진입
                 <div className="flex-1 flex flex-col">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                        {/* 카테고리 배지 — 노란 배경(오늘 마감)일 땐 흰색 배경, 평상시엔 color + '18' 투명도 */}
+                        {/* 카테고리 배지 — 노란 배경(오늘 마감)일 땐 흰색 배경으로 가시성 확보 */}
                         {category && (
-                            <span
-                                className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-sm border flex-shrink-0"
-                                style={{ color: category.color, borderColor: category.color, backgroundColor: isDueToday ? '#ffffff' : category.color + '18' }}
-                            >
-                                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: category.color }} />
-                                {category.name}
-                            </span>
+                            <CategoryBadge cat={category} whiteBackground={isDueToday} />
                         )}
                         <span
                             onDoubleClick={handleDoubleClick}
