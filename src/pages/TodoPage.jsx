@@ -7,12 +7,12 @@ import { useMemo, useState } from 'react'
 // 현재 시간대에 따른 인사말 반환
 function getGreeting() {
     const hour = new Date().getHours();
-    if (hour >= 0  && hour < 6)  return { sub: '늦은 새벽이네요.',          main: '할 일이 있으신가요?' };
-    if (hour >= 6  && hour < 12) return { sub: '좋은 아침입니다.',          main: '오늘 하루 어떤 일들이 기다리고 있나요?' };
-    if (hour >= 12 && hour < 14) return { sub: '점심식사는 맛있게 하셨나요?', main: '오늘 오후는 무엇을 계획 중이신가요?' };
-    if (hour >= 14 && hour < 18) return { sub: '바쁜 오후입니다.',          main: '오늘 할 일이 얼마나 남았나요?' };
-    if (hour >= 18 && hour < 21) return { sub: '어떤 하루를 보내셨나요?',    main: '오늘 못 마친 일이 있나요?' };
-    return                              { sub: '',                         main: '오늘 하루는 어떠셨나요?' };
+    if (hour >= 0  && hour < 6)  return { sub: '늦은 새벽이네요.',           main: '할 일이 있으신가요?' };
+    if (hour >= 6  && hour < 12) return { sub: '좋은 아침입니다.',           main: '오늘 하루 어떤 일들이 기다리고 있나요?' };
+    if (hour >= 12 && hour < 14) return { sub: '점심식사는 맛있게 하셨나요?',   main: '오늘 오후는 무엇을 계획 중이신가요?' };
+    if (hour >= 14 && hour < 18) return { sub: '바쁜 오후입니다.',           main: '오늘 할 일이 얼마나 남았나요?' };
+    if (hour >= 18 && hour < 21) return { sub: '어떤 하루를 보내셨나요?',     main: '오늘 못 마친 일이 있나요?' };
+    return                              { sub: '늦은 밤이네요.',            main: '오늘 하루는 어떠셨나요?' };
 }
 
 import useTodoStore from '../store/todoStore';
