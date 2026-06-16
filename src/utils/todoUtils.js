@@ -27,6 +27,16 @@ export function checkIsOverdue(todo) {
     );
 }
 
+// 시간순 정렬 — 하루종일(dueTime 없음)은 맨 앞, 이후 시간 오름차순
+export function sortTodosByTime(todos) {
+    return [...todos].sort((a, b) => {
+        if (!a.dueTime && !b.dueTime) return 0;
+        if (!a.dueTime) return -1;
+        if (!b.dueTime) return 1;
+        return a.dueTime.localeCompare(b.dueTime);
+    });
+}
+
 // 미완료 할 일 정렬
 // 1. 오늘 마감 + 기한 미초과 (시간 오름차순, 하루종일은 그룹 내 맨 뒤)
 // 2. 오늘 마감 + 기한 초과 (시간 오름차순)

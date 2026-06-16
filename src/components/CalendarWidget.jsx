@@ -10,14 +10,14 @@ import './CalendarWidget.css';
 import useTodoStore from '../store/todoStore';
 import useHolidayStore from '../store/holidayStore';
 import useCategoryStore from '../store/categoryStore';
-import { toDateString, checkIsOverdue } from '../utils/todoUtils';
+import { toDateString, checkIsOverdue, sortTodosByTime } from '../utils/todoUtils';
 
 function CalendarWidget() {
     const todos = useTodoStore((state) => state.todos);
     const { fetchHolidays, getHolidayName } = useHolidayStore();
     const getCategoryById = useCategoryStore((state) => state.getCategoryById);
 
-    const [selectedDate, setSelectedDate] = useState(null); // 클릭한 날짜
+    const [selectedDate, setSelectedDate] = useState(new Date()); // 클릭한 날짜 (초기값: 오늘)
     const [activeYear, setActiveYear] = useState(new Date().getFullYear()); // 현재 보이는 연도
 
     // 연도가 바뀔 때마다 공휴일 데이터 조회 (캐시 있으면 스킵)
@@ -28,9 +28,9 @@ function CalendarWidget() {
     // 마감일이 있는 날짜 목록 (Set으로 중복 제거)
     const dueDates = new Set(todos.map((t) => t.dueDate).filter(Boolean));
 
-    // 선택한 날짜의 할 일 목록
+    // 선택한 날짜의 할 일 목록 — 하루종일 우선, 이후 시간 오름차순 정렬
     const selectedTodos = selectedDate
-        ? todos.filter((t) => t.dueDate === toDateString(selectedDate))
+        ? sortTodosByTime(todos.filter((t) => t.dueDate === toDateString(selectedDate)))
         : [];
 
     // 날짜 클릭 시 — 같은 날짜 재클릭하면 선택 해제

@@ -80,9 +80,10 @@ function TodoItem({ todo }) {
         setEditTime(editTime ? '' : todo.dueTime || '09:00')
     }
 
+    // 기한 초과 여부 (완료 항목 제외, 하루종일은 오늘 기준 초과 아님)
     const isOverdue = checkIsOverdue(todo);
-    // 오늘 마감이면서 아직 기한 안 지난 경우 (완료 제외)
-    const isDueToday = !todo.done && !isOverdue && todo.dueDate === getTodayString();
+    // 오늘 마감 여부 — 노란 배경 강조 및 카테고리 배지 배경색 결정에 사용 (완료 제외)
+    const isDueToday = !todo.done && todo.dueDate === getTodayString();
 
     return (
         // 편집 모드일 땐 items-start로 전환 — 편집 폼이 세로로 길어져도 체크박스가 상단에 고정됨
@@ -154,7 +155,7 @@ function TodoItem({ todo }) {
                                     key={cat.id}
                                     type="button"
                                     onClick={() => setEditCategoryId(editCategoryId === cat.id ? null : cat.id)}
-                                    className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border transition-colors ${
+                                    className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-sm border transition-colors ${
                                         editCategoryId === cat.id
                                             ? 'text-white border-transparent'
                                             : 'text-gray-600 border-gray-200 bg-gray-50 hover:bg-gray-100'
@@ -179,11 +180,11 @@ function TodoItem({ todo }) {
                 // 일반 모드: 제목 더블클릭 시 편집 모드 진입
                 <div className="flex-1 flex flex-col">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                        {/* 카테고리 배지 — color + '18'로 hex 알파값 10% 배경 적용 */}
+                        {/* 카테고리 배지 — 노란 배경(오늘 마감)일 땐 흰색 배경, 평상시엔 color + '18' 투명도 */}
                         {category && (
                             <span
-                                className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs border flex-shrink-0"
-                                style={{ color: category.color, borderColor: category.color, backgroundColor: category.color + '18' }}
+                                className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-sm border flex-shrink-0"
+                                style={{ color: category.color, borderColor: category.color, backgroundColor: isDueToday ? '#ffffff' : category.color + '18' }}
                             >
                                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: category.color }} />
                                 {category.name}

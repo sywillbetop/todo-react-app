@@ -49,7 +49,7 @@ function TodoPage() {
             {/* ───────── 좌측: 할 일 영역 ───────── */}
             {/* flex-1으로 공간 채운 뒤, 내부 래퍼에서 max-w + mx-auto로 중앙 정렬 */}
             <div className='flex-1 min-h-0 flex flex-col'>
-                <div className='max-w-2xl w-full mx-auto flex flex-col flex-1 min-h-0 gap-6'>
+                <div className='max-w-2xl w-full mx-auto flex flex-col flex-1 min-h-0 gap-4'>
 
                     {/* 헤더 섹션 */}
                     <div className='flex-shrink-0 text-center'>
@@ -77,16 +77,16 @@ function TodoPage() {
 
                     {/* 카테고리 필터 칩 */}
                     {categories.length > 0 && (
-                        <div className='flex-shrink-0 flex flex-wrap gap-2'>
+                        <div className='flex-shrink-0 flex flex-wrap gap-2 justify-center'>
                             <button
                                 onClick={() => setFilterCategoryId(null)}
-                                className={`px-3 py-1 rounded-full text-xs transition-colors ${!filterCategoryId ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                className={`px-3 py-1 rounded-full text-sm transition-colors ${!filterCategoryId ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                             >전체</button>
                             {categories.map((cat) => (
                                 <button
                                     key={cat.id}
                                     onClick={() => setFilterCategoryId(filterCategoryId === cat.id ? null : cat.id)}
-                                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs border transition-colors ${
+                                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm border transition-colors ${
                                         filterCategoryId === cat.id
                                             ? 'text-white border-transparent'
                                             : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'

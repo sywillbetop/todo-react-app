@@ -148,7 +148,7 @@ function AddTodo() {
                                 }
                                 if (e.key === 'Escape') setEditingCategoryId(null);
                             }}
-                            className="w-20 text-xs border rounded-full px-2 py-0.5 outline-none focus:border-blue-400"
+                            className="w-20 text-sm border rounded-full px-2 py-0.5 outline-none focus:border-blue-400"
                             style={{ borderColor: cat.color }}
                         />
                     ) : (
@@ -156,7 +156,7 @@ function AddTodo() {
                             key={cat.id}
                             type="button"
                             onClick={() => setSelectedCategoryId(selectedCategoryId === cat.id ? null : cat.id)}
-                            className={`group flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border transition-colors ${
+                            className={`group flex items-center gap-1 px-2 py-0.5 rounded-full text-sm border transition-colors ${
                                 selectedCategoryId === cat.id
                                     ? 'text-white border-transparent'
                                     : 'text-gray-600 border-gray-200 bg-gray-50 hover:bg-gray-100'
@@ -190,7 +190,7 @@ function AddTodo() {
                     <button
                         type="button"
                         onClick={() => setIsAddingCategory(true)}
-                        className="text-xs text-gray-400 hover:text-blue-500 transition-colors"
+                        className="flex items-center gap-1 px-2 py-0.5 rounded-full text-sm bg-slate-600 text-white hover:bg-slate-700 transition-colors"
                     >+ 카테고리</button>
                 )}
             </div>
