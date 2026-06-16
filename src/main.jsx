@@ -10,7 +10,7 @@ import './index.css' // 전역 CSS (Tailwind 포함)
 
 createRoot(document.getElementById('root')).render(
     // BrowserRouter로 감싸야 앱 어디서든 React Router를 쓸 수 있음
-    <BrowserRouter>
+    <BrowserRouter basename="/todo-react-app">
         <App />
     </BrowserRouter>
 )
