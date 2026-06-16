@@ -46,7 +46,7 @@ function TodoPage() {
             {/* ───────── 좌측: 할 일 영역 ───────── */}
             {/* flex-1으로 공간 채운 뒤, 내부 래퍼에서 max-w + mx-auto로 중앙 정렬 */}
             <div className='flex-1 min-h-0 flex flex-col'>
-                <div className='max-w-lg w-full mx-auto flex flex-col flex-1 min-h-0 gap-6'>
+                <div className='max-w-2xl w-full mx-auto flex flex-col flex-1 min-h-0 gap-6'>
 
                     {/* 헤더 섹션 */}
                     <div className='flex-shrink-0 text-center'>
