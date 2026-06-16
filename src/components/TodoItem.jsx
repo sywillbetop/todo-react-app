@@ -7,6 +7,7 @@ import { useState, useRef } from 'react'
 import useTodoStore from '../store/todoStore';
 import useCategoryStore from '../store/categoryStore';
 import Toggle from './Toggle';
+import { checkIsOverdue } from '../utils/todoUtils';
 
 /**
  * @param {Object} todo - 부모로부터 전달받은 개별 할 일 객체 { id, title, done, dueDate, dueTime, categoryId }
@@ -79,8 +80,7 @@ function TodoItem({ todo }) {
         setEditTime(editTime ? '' : todo.dueTime || '09:00')
     }
 
-    // 마감일이 오늘보다 이전이고 미완료인 경우 기한 초과로 판단
-    const isOverdue = !todo.done && todo.dueDate && todo.dueDate < new Date().toISOString().slice(0, 10);
+    const isOverdue = checkIsOverdue(todo);
 
     return (
         // 편집 모드일 땐 items-start로 전환 — 편집 폼이 세로로 길어져도 체크박스가 상단에 고정됨

@@ -10,6 +10,7 @@ import './CalendarWidget.css';
 import useTodoStore from '../store/todoStore';
 import useHolidayStore from '../store/holidayStore';
 import useCategoryStore from '../store/categoryStore';
+import { toDateString, checkIsOverdue } from '../utils/todoUtils';
 
 function CalendarWidget() {
     const todos = useTodoStore((state) => state.todos);
@@ -22,7 +23,7 @@ function CalendarWidget() {
     // 연도가 바뀔 때마다 공휴일 데이터 조회 (캐시 있으면 스킵)
     useEffect(() => {
         fetchHolidays(activeYear);
-    }, [activeYear]);
+    }, [activeYear, fetchHolidays]);
 
     // 마감일이 있는 날짜 목록 (Set으로 중복 제거)
     const dueDates = new Set(todos.map((t) => t.dueDate).filter(Boolean));
@@ -31,11 +32,6 @@ function CalendarWidget() {
     const selectedTodos = selectedDate
         ? todos.filter((t) => t.dueDate === toDateString(selectedDate))
         : [];
-
-    // Date 객체를 'YYYY-MM-DD' 문자열로 변환
-    function toDateString(date) {
-        return date.toLocaleDateString('sv-SE'); // sv-SE 로케일은 YYYY-MM-DD 형식 반환
-    }
 
     // 날짜 클릭 시 — 같은 날짜 재클릭하면 선택 해제
     const handleDateClick = (date) => {
@@ -109,7 +105,7 @@ function CalendarWidget() {
                             {selectedTodos.map((todo) => {
                                 // 각 할 일 순회하며, categoryId가 있으면 (= 카테고리에 속해 있으면) 스토어에서 카테고리 객체 꺼내고 없으면 null
                                 const cat = todo.categoryId ? getCategoryById(todo.categoryId) : null;
-                                const isOverdue = !todo.done && todo.dueDate < new Date().toISOString().slice(0, 10);
+                                const isOverdue = checkIsOverdue(todo);
                                 return (
                                     <li key={todo.id} className='flex items-center gap-2 text-sm'>
                                         {cat
