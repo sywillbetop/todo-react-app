@@ -5,19 +5,7 @@
 import { useState } from 'react';
 import useTodoStore from '../store/todoStore';
 import useCategoryStore, { CATEGORY_COLORS } from '../store/categoryStore';
-
-// 토글 스위치 컴포넌트
-function Toggle({ enabled, onToggle }) {
-    return (
-        <button
-            type='button'
-            onClick={onToggle}
-            className={`relative w-10 h-5 rounded-full transition-colors duration-200 flex-shrink-0 ${enabled ? 'bg-blue-500' : 'bg-gray-300'}`}
-        >
-            <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${enabled ? 'translate-x-5' : 'translate-x-0'}`} />
-        </button>
-    );
-}
+import Toggle from './Toggle';
 
 function AddTodo() {
     const [input, setInput] = useState('');

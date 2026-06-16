@@ -45,11 +45,11 @@ const useTodoStore = create(persist((set) => ({
 
     // 할 일 내용 수정 (인라인 편집)
     // id: 수정할 항목의 id
-    // newTitle: 수정된 새 텍스트
-    updateTodo: (id, newTitle) =>
+    // updates: { title?, dueDate?, dueTime?, categoryId? }
+    updateTodo: (id, updates) =>
         set((state) => ({
             todos: state.todos.map((t) =>
-                t.id === id ? { ...t, title: newTitle } : t
+                t.id === id ? { ...t, ...updates } : t
             ),
         })),
     }),
