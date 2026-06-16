@@ -7,7 +7,7 @@ import { useState, useRef } from 'react'
 import useTodoStore from '../store/todoStore';
 import useCategoryStore from '../store/categoryStore';
 import Toggle from './Toggle';
-import { checkIsOverdue } from '../utils/todoUtils';
+import { checkIsOverdue, getTodayString } from '../utils/todoUtils';
 
 /**
  * @param {Object} todo - 부모로부터 전달받은 개별 할 일 객체 { id, title, done, dueDate, dueTime, categoryId }
@@ -81,10 +81,12 @@ function TodoItem({ todo }) {
     }
 
     const isOverdue = checkIsOverdue(todo);
+    // 오늘 마감이면서 아직 기한 안 지난 경우 (완료 제외)
+    const isDueToday = !todo.done && !isOverdue && todo.dueDate === getTodayString();
 
     return (
         // 편집 모드일 땐 items-start로 전환 — 편집 폼이 세로로 길어져도 체크박스가 상단에 고정됨
-        <div className={`flex gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:shadow-md transition-shadow ${isEditing ? 'items-start' : 'items-center'}`}>
+        <div className={`flex gap-3 p-3 rounded-lg border hover:shadow-md transition-shadow ${isEditing ? 'items-start' : 'items-center'} ${isDueToday ? 'bg-yellow-50 border-yellow-200' : 'bg-white border-gray-100'}`}>
 
             {/* 체크박스: 클릭하면 done 상태 토글 */}
             <input

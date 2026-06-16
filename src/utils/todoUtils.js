@@ -26,3 +26,40 @@ export function checkIsOverdue(todo) {
         (todo.dueDate === today && todo.dueTime && todo.dueTime < currentTime)
     );
 }
+
+// 미완료 할 일 정렬
+// 1. 오늘 마감 + 기한 미초과 (시간 오름차순, 하루종일은 그룹 내 맨 뒤)
+// 2. 오늘 마감 + 기한 초과 (시간 오름차순)
+// 3. 나머지 (마감일 오름차순, 마감일 없는 건 맨 뒤)
+export function sortPendingTodos(todos) {
+    const today = getTodayString();
+    return [...todos].sort((a, b) => {
+        const aToday = a.dueDate === today;
+        const bToday = b.dueDate === today;
+        const aOverdue = checkIsOverdue(a);
+        const bOverdue = checkIsOverdue(b);
+
+        // 오늘 미초과 > 오늘 초과 > 나머지 순으로 그룹 우선순위 계산
+        const rank = (todo, isToday, isOverdue) => {
+            if (isToday && !isOverdue) return 0;
+            if (isToday && isOverdue) return 1;
+            return 2;
+        };
+        const rankDiff = rank(a, aToday, aOverdue) - rank(b, bToday, bOverdue);
+        if (rankDiff !== 0) return rankDiff;
+
+        // 같은 그룹 내 시간 오름차순 (하루종일은 맨 뒤)
+        if (aToday && bToday) {
+            if (!a.dueTime && !b.dueTime) return 0;
+            if (!a.dueTime) return 1;
+            if (!b.dueTime) return -1;
+            return a.dueTime.localeCompare(b.dueTime);
+        }
+
+        // 나머지: 마감일 오름차순, 마감일 없는 건 맨 뒤
+        if (!a.dueDate && !b.dueDate) return 0;
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return a.dueDate.localeCompare(b.dueDate);
+    });
+}

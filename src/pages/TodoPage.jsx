@@ -17,6 +17,7 @@ function getGreeting() {
 
 import useTodoStore from '../store/todoStore';
 import useCategoryStore from '../store/categoryStore';
+import { sortPendingTodos } from '../utils/todoUtils';
 import AddTodo from '../components/AddTodo';
 import TodoItem from '../components/TodoItem';
 import WeatherWidget from '../components/WeatherWidget';
@@ -31,7 +32,8 @@ function TodoPage() {
     // useMemo: todos가 변경될 때만 다시 계산 (불필요한 재계산 방지위함)
     const pendingTodos = useMemo(() => {
         const pending = todos.filter((t) => !t.done);
-        return filterCategoryId ? pending.filter((t) => t.categoryId === filterCategoryId) : pending;
+        const filtered = filterCategoryId ? pending.filter((t) => t.categoryId === filterCategoryId) : pending;
+        return sortPendingTodos(filtered);
     }, [todos, filterCategoryId]);
     const doneTodos = useMemo(() => {
         const done = todos.filter((t) => t.done);
