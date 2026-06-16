@@ -7,5 +7,6 @@ import tailwindcss from '@tailwindcss/vite' //Tailwind CSS를 Vite에서 쓸 수
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()], // 두 플러그인 모두 등록
+  plugins: [react(), tailwindcss()],
+  base: '/todo-react-app/',
 })
