@@ -26,6 +26,7 @@ function TodoPage() {
     const todos = useTodoStore((state) => state.todos);
     const categories = useCategoryStore((state) => state.categories);
     const [filterCategoryId, setFilterCategoryId] = useState(null);
+    const filterCategory = categories.find((c) => c.id === filterCategoryId) ?? null;
 
     // useMemo: todos가 변경될 때만 다시 계산 (불필요한 재계산 방지위함)
     const pendingTodos = useMemo(() => {
@@ -56,14 +57,16 @@ function TodoPage() {
                         <div className='flex items-center justify-center gap-2'>
                             <h1 className='text-2xl font-semibold text-blue-600'>{getGreeting().main}</h1>
                             {pendingCount > 0 ? (
-                                // 미완료 항목이 있으면 숫자 배지 표시
-                                <span className='bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full'>
+                                // 미완료 항목이 있으면 숫자 배지 표시 — 카테고리 필터 활성 시 해당 카테고리 색으로 표시
+                                <span
+                                    className='text-white text-xs px-2 py-0.5 rounded-full'
+                                    style={{ backgroundColor: filterCategory ? filterCategory.color : '#2563eb' }}
+                                >
                                     {pendingCount}
                                 </span>
-                                // TODO: 카테고리 필터 시 컬러로 구분? 아니면 다른 방법 고려, 카테고리에 등록된 할 일 없을 때 '모두 완료!' 표시 여부 고려.
                             ) : (
-                                // 미완료 항목이 0개이고 todos가 하나라도 있으면 '모두 완료!' 표시
-                                todos.length > 0 && (
+                                // 필터 기준으로 미완료 0개 + 완료 1개 이상일 때 '모두 완료!' 표시
+                                doneTodos.length > 0 && (
                                     <span className='text-sm text-green-500 font-medium'>모두 완료!</span>
                                 )
                             )}
