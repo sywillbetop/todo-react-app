@@ -1,8 +1,9 @@
-/* 카테고리 배지 / 선택 칩 공용 컴포넌트
-    --> onClick 없으면 읽기 전용 배지 (TodoItem 뷰 모드)
-    --> onClick 있으면 선택 가능한 칩 (AddTodo, TodoItem 편집, TodoPage 필터)
-    --> onEdit / onDelete 전달 시 호버에서 연필 아이콘 / X 아이콘 노출 (AddTodo)
-    --> whiteBackground: 노란 배경 카드 위에서 배지 가시성 확보용 (isDueToday)
+/**
+ *  카테고리 배지 / 선택 칩 공용 컴포넌트
+ *   --> onClick 없으면 읽기 전용 배지 (TodoItem 뷰 모드)
+ *   --> onClick 있으면 선택 가능한 칩 (AddTodo, TodoItem 편집, TodoPage 필터)
+ *   --> onEdit / onDelete 전달 시 호버에서 연필 아이콘 / X 아이콘 노출 (AddTodo)
+ *   --> whiteBackground: 노란 배경 카드 위에서 배지 가시성 확보용 (isDueToday)
  */
 
 function CategoryBadge({ cat, selected, onClick, onEdit, onDelete, whiteBackground = false, className = '' }) {

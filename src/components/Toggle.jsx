@@ -1,5 +1,8 @@
-// 토글 공용 컴포넌트로 분리
-// --> AddTodo, TodoItem 에서 Toggle 사용으로 코드의 중복 제거 위함
+/**
+ * 토글 공용 컴포넌트로 분리
+ *  --> AddTodo, TodoItem 에서 Toggle 사용으로 코드의 중복 제거 위함
+ */
+
 function Toggle({ enabled, onToggle }) {
     return (
         <button

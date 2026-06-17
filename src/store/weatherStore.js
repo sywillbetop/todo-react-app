@@ -1,3 +1,8 @@
+/**
+ * 날씨 위젯 컴포넌트
+ * --> 기본 기능에 도시 입력 오류에 대한 예외 추가
+ */
+
 import { create } from 'zustand';
 
 const useWeatherStore = create((set) => ({
@@ -38,7 +43,7 @@ const useWeatherStore = create((set) => ({
             set({weather: data, isLoading: false, error: null});
         } catch {
             console.warn(`fetchWeather: '${city}' 조회 실패, 기본 도시(${DEFAULT_CITY})로 재시도`);
-            // 입력 도시 조회 실패 시 기본 도시(서울)로 재시도
+            // 입력 도시 조회 실패 시 예외처리 - 문구 플로팅 및 기본 도시(서울)로 재시도
             try {
                 const fallbackData = await request(DEFAULT_CITY);
                 // 폴백 성공 — 날씨는 Seoul로 표시하되, 입력 도시가 없었음을 error로 알림

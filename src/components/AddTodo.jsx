@@ -1,4 +1,4 @@
-/* 할 일 추가 컴포넌트
+/** 할 일 추가 컴포넌트
     --> 텍스트 입력 + 날짜/시간 토글 선택 + 카테고리 선택 후 추가 버튼 또는 엔터키로 등록
  */
 
@@ -81,7 +81,7 @@ function AddTodo() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleAdd();
+                        if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleAdd(); // 한글 조합 중 엔터 이벤트 중복 발생 방지
                     }}
                     placeholder="할 일을 입력하세요..."
                     className="flex-1 outline-none text-gray-700 placeholder-gray-400"
