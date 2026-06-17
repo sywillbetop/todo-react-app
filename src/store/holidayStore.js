@@ -1,5 +1,5 @@
-/* 공휴일 상태 관리 파일
-    --> Nager.Date API로 연도별 한국 공휴일 조회 및 캐싱
+/** 공휴일 상태 관리 파일
+ *  --> Nager.Date API로 연도별 한국 공휴일 조회 및 캐싱
  */
 
 import { create } from 'zustand';
