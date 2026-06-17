@@ -101,7 +101,7 @@ function CalendarWidget() {
                         )}
                     </div>
                     {selectedTodos.length > 0 ? ( // 선택한 날짜의 할 일이 1개 이상이면 목록, 없으면 빈 문구
-                        <ul className='space-y-1'>
+                        <ul className='space-y-1 max-h-[52px] overflow-y-auto'>
                             {selectedTodos.map((todo) => {
                                 // 각 할 일 순회하며, categoryId가 있으면 (= 카테고리에 속해 있으면) 스토어에서 카테고리 객체 꺼내고 없으면 null
                                 const cat = todo.categoryId ? getCategoryById(todo.categoryId) : null;
@@ -119,7 +119,7 @@ function CalendarWidget() {
                                             {todo.title}
                                         </span>
                                         {/* 기한 초과 경고 + 시간 표시 */}
-                                        <span className={`text-xs flex-shrink-0 ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
+                                        <span className={`text-xs flex-shrink-0 mr-1 ${isOverdue ? 'text-red-400' : 'text-gray-400'}`}>
                                             {isOverdue ? '⚠ ' : ''}{todo.dueTime ?? '하루종일'}
                                         </span>
                                     </li>

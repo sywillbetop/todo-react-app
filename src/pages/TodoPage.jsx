@@ -151,14 +151,18 @@ function TodoPage() {
             </div>
 
             {/* ───────── 우측: 위젯 영역 ───────── */}
-            <div className='w-80 flex-shrink-0 flex flex-col gap-4'>
-                <WeatherWidget />
-                <CalendarWidget />
+            <div className='w-96 flex-shrink-0 flex flex-col gap-4 min-h-0 overflow-hidden'>
+                <div className='flex-shrink-0'>
+                    <WeatherWidget />
+                </div>
+                <div className='flex-shrink-0'>
+                    <CalendarWidget />
+                </div>
 
                 {/* 완료 항목 섹션 — 항상 표시 */}
-                <div className='bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col gap-3'>
+                <div className='bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col gap-3 flex-1 min-h-0'>
                     {/* 완료 섹션 헤더 */}
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 flex-shrink-0'>
                         <hr className='flex-1 border-gray-200' />
                         <span className='text-xs text-gray-400 whitespace-nowrap font-medium'>
                             완료 {doneTodos.length}개
@@ -167,7 +171,7 @@ function TodoPage() {
                     </div>
                     {/* 완료 항목 목록 (스크롤) */}
                     {doneTodos.length > 0 ? (
-                        <div className='space-y-2 max-h-60 overflow-y-auto'>
+                        <div className='space-y-2 overflow-y-auto flex-1 min-h-0'>
                             {doneTodos.map((todo) => (
                                 <TodoItem key={todo.id} todo={todo} />
                             ))}

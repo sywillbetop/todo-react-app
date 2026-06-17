@@ -13,8 +13,8 @@
 .react-calendar__navigation {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
-    padding: 0.75rem 0.75rem 0;
+    margin-bottom: 0.25rem;
+    padding: 0.5rem 0.5rem 0;
     gap: 0.25rem;
 }
 .react-calendar__navigation__label {
@@ -58,7 +58,7 @@
     padding: 0 0.5rem;
 }
 .react-calendar__month-view__weekdays__weekday {
-    padding: 0.4rem 0;
+    padding: 0.25rem 0;
     font-size: 0.7rem;
     font-weight: 600;
     color: #9ca3af;
@@ -69,13 +69,13 @@
 
 /* ── 날짜 타일 ── */
 .react-calendar__month-view__days {
-    padding: 0 0.5rem 0.75rem;
+    padding: 0 0.5rem 0.5rem;
 }
 .react-calendar__tile {
     background: transparent;
     border: none;
     border-radius: 0.5rem;
-    padding: 0.35rem 0.25rem;
+    padding: 0.2rem 0.25rem;
     font-size: 0.8rem;
     color: #374151;
     cursor: pointer;
