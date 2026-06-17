@@ -35,6 +35,14 @@ const useTodoStore = create(persist((set) => ({
             )
         })),
 
+        // 중요 표시 토글
+        toggleImportant: (id) =>
+            set((state) => ({
+            todos: state.todos.map((t) =>
+                t.id === id ? { ...t, important: !t.important } : t
+            )
+        })),
+
     // 할 일 삭제
     // id: 삭제할 항목의 id
     deleteTodo: (id) =>

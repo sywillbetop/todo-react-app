@@ -14,7 +14,7 @@ import { checkIsOverdue, getTodayString } from '../utils/todoUtils';
  * @param {Object} todo - 부모로부터 전달받은 개별 할 일 객체 { id, title, done, dueDate, dueTime, categoryId }
  */
 function TodoItem({ todo }) {
-    const { toggleTodo, deleteTodo, updateTodo } = useTodoStore();
+    const { toggleTodo, deleteTodo, updateTodo, toggleImportant } = useTodoStore();
     const { categories, getCategoryById } = useCategoryStore();
 
     // 현재 todo에 연결된 카테고리 객체 (없으면 null)
@@ -190,6 +190,21 @@ function TodoItem({ todo }) {
                     )}
                 </div>
             )}
+
+            {/* 중요 표시 버튼 */}
+            <button
+                onClick={() => toggleImportant(todo.id)}
+                className="p-1 rounded transition-colors flex-shrink-0"
+                aria-label="중요 표시"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                     viewBox="0 0 24 24"
+                     fill={todo.important ? '#facc15' : 'none'}
+                     stroke={todo.important ? '#facc15' : '#d1d5db'}
+                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+            </button>
 
             {/* 삭제 버튼 */}
             <button
