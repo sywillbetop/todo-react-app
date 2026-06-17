@@ -17,7 +17,7 @@ function getGreeting() {
 
 import useTodoStore from '../store/todoStore';
 import useCategoryStore from '../store/categoryStore';
-import { sortPendingTodos } from '../utils/todoUtils';
+import { sortPendingTodos, getTodayString, checkIsOverdue } from '../utils/todoUtils';
 import AddTodo from '../components/AddTodo';
 import CategoryBadge from '../components/CategoryBadge';
 import TodoItem from '../components/TodoItem';
@@ -29,13 +29,20 @@ function TodoPage() {
     const categories = useCategoryStore((state) => state.categories);
     const [filterCategoryId, setFilterCategoryId] = useState(null);
     const filterCategory = categories.find((c) => c.id === filterCategoryId) ?? null;
+    // 상태 필터: null | 'today' | 'important' | 'overdue' — 카테고리 필터와 독립적으로 AND 조건 적용
+    const [filterStatus, setFilterStatus] = useState(null);
 
     // useMemo: todos가 변경될 때만 다시 계산 (불필요한 재계산 방지위함)
     const pendingTodos = useMemo(() => {
-        const pending = todos.filter((t) => !t.done);
-        const filtered = filterCategoryId ? pending.filter((t) => t.categoryId === filterCategoryId) : pending;
-        return sortPendingTodos(filtered);
-    }, [todos, filterCategoryId]);
+        const today = getTodayString();
+        let pending = todos.filter((t) => !t.done);
+        if (filterCategoryId) pending = pending.filter((t) => t.categoryId === filterCategoryId);
+        // 상태 필터 적용 (카테고리 필터와 AND 조건)
+        if (filterStatus === 'today')     pending = pending.filter((t) => t.dueDate === today);
+        if (filterStatus === 'important') pending = pending.filter((t) => t.important);
+        if (filterStatus === 'overdue')   pending = pending.filter((t) => checkIsOverdue(t));
+        return sortPendingTodos(pending);
+    }, [todos, filterCategoryId, filterStatus]);
     const doneTodos = useMemo(() => {
         const done = todos.filter((t) => t.done);
         return filterCategoryId ? done.filter((t) => t.categoryId === filterCategoryId) : done;
@@ -98,6 +105,36 @@ function TodoPage() {
                     {/* 입력 컴포넌트 (고정) */}
                     <div className='flex-shrink-0'>
                         <AddTodo />
+                    </div>
+
+                    {/* 상태 필터 탭 — 카테고리 칩과 구분되도록 탭 언더라인 스타일 적용 */}
+                    <div className='flex-shrink-0 flex items-center gap-1 border-b border-gray-200'>
+                        {[
+                            { key: null,        label: '전체' },
+                            { key: 'today',     label: '🗓 오늘' },
+                            { key: 'important', label: '⭐ 중요' },
+                            { key: 'overdue',   label: '⚠ 기한 초과' },
+                        ].map(({ key, label }) => (
+                            <button
+                                key={String(key)}
+                                onClick={() => setFilterStatus(filterStatus === key ? null : key)}
+                                className={`px-3 py-1.5 text-xs font-medium border-b-2 -mb-px transition-colors ${
+                                    filterStatus === key
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-400 hover:text-gray-600'
+                                }`}
+                            >{label}</button>
+                        ))}
+                        {/* 정렬 기준 안내 툴팁 — 호버 시 현재 정렬 순서 표시 */}
+                        <div className='relative group ml-auto mb-px'>
+                            <span className='cursor-default text-xl text-gray-500 hover:text-gray-700 transition-colors select-none leading-none'>ⓘ</span>
+                            <div className='absolute right-0 bottom-full mb-2 w-48 bg-gray-800/75 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 leading-relaxed backdrop-blur-sm'>
+                                <p className='font-medium mb-1'>정렬 순서</p>
+                                <p>① 오늘 마감 (시간 오름차순)</p>
+                                <p>② 기한 초과</p>
+                                <p>③ 나머지 (마감일 오름차순)</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* 미완료 목록 (스크롤 영역) */}
